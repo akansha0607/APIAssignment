@@ -1,0 +1,280 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Swagger API Documentation",
+      "description": "A simple API Documentation slide"
+    },
+    "basePath": "/api",
+    "tags": [
+      {
+        "name": "Users",
+        "description": "API for users"
+      }
+    ],
+    "produces": ["application/json"],
+    "paths": {
+      "/user": {
+        "get": {
+          "tags": ["Users"],
+          "summary": "Get all users",
+          "responses": {
+            "200": {
+              "description": "Returns all the users from the database",
+              "schema": {
+                "$ref": "#/definitions/Users"
+              }
+            },
+            "404": {
+              "description": "Bad Request",
+              "schema": {
+                "$ref": "#/definitions/BadResponse"
+              }
+            }
+          }
+        },
+        "post": {
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "Body",
+              "description": "New User to be created in the database",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserSchema"
+              }
+            }
+          ],
+          "tags": ["Users"],
+          "summary": "Create User",
+          "responses": {
+            "200": {
+              "description": "Returns the created user",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "404": {
+              "description": "Bad Request",
+              "schema": {
+                "$ref": "#/definitions/BadResponse"
+              }
+            }
+          }
+        }
+      },
+      "/user/{id}": {
+        "get": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "Id of the user to be searched",
+              "type": "string"
+            }
+          ],
+          "produces": ["application/json"],
+          "tags": ["Users"],
+          "summary": "Get user by id",
+          "responses": {
+            "200": {
+              "description": "Returns a user for a particular id",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "404": {
+              "description": "User not found",
+              "schema": {
+                "$ref": "#/definitions/BadResponse"
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "schema": {
+                "$ref": "#/definitions/BadResponse"
+              }
+            }
+          }
+        },
+        "delete": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "Id of the user which needs to be deleted",
+              "type": "string"
+            }
+          ],
+          "produces": ["application/json"],
+          "tags": ["Users"],
+          "summary": "Delete user by id",
+          "responses": {
+            "200": {
+              "description": "Returns the deleted user",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "404": {
+              "description": "User not found",
+              "schema": {
+                "$ref": "#/definitions/BadResponse"
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "schema": {
+                "$ref": "#/definitions/BadResponse"
+              }
+            }
+          }
+        },
+        "patch": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "Id of the user which needs to be updated",
+              "type": "string"
+            },
+            {
+              "in": "body",
+              "name": "Body",
+              "description": "User object that needs to be updated in the database",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserSchema"
+              }
+            }
+          ],
+          "produces": ["application/json"],
+          "tags": ["Users"],
+          "summary": "Update user by id",
+          "responses": {
+            "200": {
+              "description": "Returns the original user (before updation)",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "404": {
+              "description": "User not found",
+              "schema": {
+                "$ref": "#/definitions/BadResponse"
+              }
+            },
+            "400": {
+              "description": "Bad Request",
+              "schema": {
+                "$ref": "#/definitions/BadResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "Users": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "type": "boolean",
+            "default": false
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/UserSchema"
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "type": "boolean",
+            "default": false
+          },
+          "data": {
+            "$ref": "#/definitions/UserSchema"
+          }
+        }
+      },
+      "BadResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "default": null
+          }
+        }
+      },
+      "UserSchema": {
+        "type": "object",
+        "required": ["Name", "Age", "Email", "Gender", "Mobile", "Birthday", "City", "State", "Country"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "uniqueItems": true
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Age": {
+            "type": "integer"
+          },
+          "Email": {
+            "type": "string",
+            "uniqueItems": true
+          },
+          "Gender": {
+            "type": "string"
+          },
+          "Mobile": {
+            "type": "number",
+            "uniqueItems": true
+          },
+          "Birthday": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "State": {
+            "type": "string"
+          },
+          "Country": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
